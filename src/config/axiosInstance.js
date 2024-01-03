@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const urlApi = "https://api.giphy.com/v1/gifs/";
+const urlApi = import.meta.env.VITE_URL_API;
 
 export const reqAxios = axios.create({
   baseURL: urlApi,

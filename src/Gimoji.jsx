@@ -4,10 +4,12 @@ import { GifCard } from "./components/ui/GifCard";
 import { Searcher } from "./components/ui/Searcher";
 import { reqAxios } from "./config/axiosInstance";
 
-const apiKey = "P9fWu2B6NMu6fPeNHNDsFrrTU8AlPjZW";
-const limit = 16;
+const urlApi = import.meta.env.VITE_URL_API
+const apiKey = import.meta.env.VITE_APIKEY_GIPHY
+const limit = 8;
 // const category = "memes";
-const urlApi = "https://api.giphy.com/v1/gifs/";
+
+
 
 export const Gimoji = () => {
   const [dataApi, setDataApi] = useState([]);
@@ -16,15 +18,16 @@ export const Gimoji = () => {
     useState("actions");
 
   const callCategoriesApi = async () => {
-    const resp = await fetch(`${urlApi}categories?api_key=${apiKey}`);
-    const { data } = await resp.json();
-    setCategories(data);
+    // const resp = await fetch(`${urlApi}categories?api_key=${apiKey}`);
+    // const { data } = await resp.json();
+    // setCategories(data);
+
+    const resp = await reqAxios.get(`${urlApi}categories?api_key=${apiKey}`);
+    const { data: categoriesData } = await resp.data;
+    setCategories(categoriesData)
   };
 
-  const onChangeCategories = (e) => {
-    setSelectCategoryOrSearch(e.target.value);
-  };
-
+  
   const callApi = async () => {
     callCategoriesApi();
     // const resp = await fetch(
@@ -32,10 +35,14 @@ export const Gimoji = () => {
     // );
     // const { data } = await resp.json();
     // setDataApi(data);
-
+    
     const resp = await reqAxios.get(`${urlApi}search?api_key=${apiKey}&q=${selectCategoryOrSearch}&limit=${limit}&offset=0&rating=g&lang=es&bundle=messaging_non_clips`);
     const {data} = resp.data
     setDataApi(data)
+  };
+  
+  const onChangeCategories = (e) => {
+    setSelectCategoryOrSearch(e.target.value);
   };
 
   const onClickSearch = (value) => {
