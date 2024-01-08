@@ -4,15 +4,22 @@ import { GifCard } from "./components/ui/GifCard";
 import { Searcher } from "./components/ui/Searcher";
 import { useAxios } from "./hooks/useAxios";
 import { Loading } from "./components/ui/Loading";
+import { CustomPaginate } from "./components/ui/CustomPaginate";
+import { usePaginate } from "./hooks/usePaginate";
 
 const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
-const limit = 12;
+const limit = 8;
 
 export const Gimoji = () => {
   const [selectCategoryOrSearch, setSelectCategoryOrSearch] =
     useState("actions");
 
-  const url = `search?api_key=${apiKey}&q=${selectCategoryOrSearch}&limit=${limit}&offset=0&rating=g&lang=es&bundle=messaging_non_clips`;
+  const { offset, pageNumber, prevPage, nextPage } = usePaginate(
+    limit,
+    selectCategoryOrSearch
+  );
+
+  const url = `search?api_key=${apiKey}&q=${selectCategoryOrSearch}&limit=${limit}&offset=${offset}&rating=g&lang=es&bundle=messaging_non_clips`;
   const urlCategories = `categories?api_key=${apiKey}`;
 
   const { dataApi: dataGif, isLoading } = useAxios(url);
@@ -33,8 +40,9 @@ export const Gimoji = () => {
   } else {
     return (
       <>
+
         <div className="container-fluid mt-5">
-          <div className="row justify-content-start">
+          <div className="row justify-content-evenly">
             <div className="col-sm-4">
               <CustomSelect
                 onChangeCategories={(e) => onChangeCategories(e.target.value)}
@@ -46,7 +54,14 @@ export const Gimoji = () => {
             </div>
           </div>
         </div>
-        <div className="album py-5 ">
+        
+        <CustomPaginate
+          pageNumber={pageNumber}
+          prevPage={prevPage}
+          nextPage={nextPage}
+        />
+
+        <div className="album pb-5 ">
           <div className="container-fluid">
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
               {dataGif.map((item) => (
@@ -59,19 +74,6 @@ export const Gimoji = () => {
               ))}
             </div>
           </div>
-        </div>
-
-        <div className="row mb-5 row-cols-md-3 d-flex justify-content-between align-items-center">
-          <button
-            className="btn btn-outline-primary btn-lg "
-            onClick={() => {}}
-          >
-            Anterior
-          </button>
-          <h3 className="text-center"> Page: 1 </h3>
-          <button className="btn btn-outline-primary btn-lg" onClick={() => {}}>
-            Siguiente
-          </button>
         </div>
       </>
     );

@@ -10,11 +10,14 @@ export const useLike = (shortId) => {
     if (!liked) {
       setLikes((prev) => prev + 1);
       setLiked(true);
-      console.log(shortId)
+      if (shortId === undefined) {
+        console.info("👍🏽 Likeaste un gif 👍🏽");
+      } else {
+        console.info(`♥️ Guardaste como favorito a ${shortId} ♥️`);
+      }
     } else {
       setLikes((prev) => prev - 1);
       setLiked(false);
-      console.log(shortId)
     }
   };
   return {
