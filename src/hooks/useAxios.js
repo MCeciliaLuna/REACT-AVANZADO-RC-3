@@ -1,15 +1,30 @@
 import { useEffect, useState } from "react";
-import { reqAxios } from "../config/axiosInstance";
+import axios from "axios";
 
-const urlApi = import.meta.env.VITE_URL_API
+const urlApi = import.meta.env.VITE_URL_API;
 
-export const useAxios = (url) => {
+export const reqAxios = axios.create({
+  baseURL: urlApi,
+  timeout: 12000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export const useAxios = (url, method, params) => {
   const [dataApi, setDataApi] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const getAxios = async () => {
-    const resp = await reqAxios.get(urlApi + url);
+    const resp = await reqAxios({
+      urlApi,
+      url,
+      method,
+      params: { params }
+    });
     const { data } = resp.data;
     setDataApi(data);
+    setIsLoading(false)
   };
 
   useEffect(() => {
@@ -18,5 +33,10 @@ export const useAxios = (url) => {
 
   return {
     dataApi,
+    isLoading
   };
 };
+
+useAxios.defaultProps={
+params: null
+}
