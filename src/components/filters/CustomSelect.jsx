@@ -1,7 +1,7 @@
 export const CustomSelect = ({ onChangeCategories, index, categories }) => {
   return (
     <select
-      className="form-select"
+      className="form-select w-75"
       aria-label="Default select example"
       onChange={onChangeCategories}
     >

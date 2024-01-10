@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CustomSelect } from "./components/ui/CustomSelect";
+import { CustomSelect } from "./components/filters/CustomSelect";
 import { GifCard } from "./components/ui/GifCard";
-import { Searcher } from "./components/ui/Searcher";
+import { Searcher } from "./components/filters/Searcher";
 import { useAxios } from "./hooks/useAxios";
 import { Loading } from "./components/ui/Loading";
 import { CustomPaginate } from "./components/ui/CustomPaginate";
